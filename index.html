@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teoman Alici — Portfolio</title>
+  <link rel="icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d1117;
+      --surface:    #161b22;
+      --surface2:   #21262d;
+      --border:     #30363d;
+      --green:      #3fb950;
+      --green-dim:  rgba(63,185,80,0.12);
+      --blue:       #58a6ff;
+      --blue-dim:   rgba(88,166,255,0.12);
+      --text:       #e6edf3;
+      --muted:      #8b949e;
+      --red:        #ff5f56;
+      --yellow:     #ffbd2e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 2rem;
+      background: rgba(13,17,23,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo { color: var(--green); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.04em; }
+    .nav-logo span { color: var(--muted); }
+
+    .nav-right { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-right a { color: var(--muted); text-decoration: none; font-size: 0.78rem; transition: color .2s; }
+    .nav-right a:hover { color: var(--text); }
+
+    .lang-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .lang-btn:hover { border-color: var(--green); color: var(--green); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 1.5rem 3rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(63,185,80,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(63,185,80,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black, transparent);
+      pointer-events: none;
+    }
+
+    .hero-terminal {
+      max-width: 680px;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,.6), 0 0 0 1px rgba(63,185,80,.04);
+      animation: fadeUp .55s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── TERMINAL CHROME ─── */
+    .t-bar {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .65rem 1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 11px; height: 11px; border-radius: 50%; }
+    .d-r { background: var(--red); }
+    .d-y { background: var(--yellow); }
+    .d-g { background: var(--green); }
+    .t-title { flex: 1; text-align: center; font-size: .7rem; color: var(--muted); }
+
+    .t-body { padding: 1.5rem 1.75rem; }
+
+    .cmd { color: var(--green); font-size: .85rem; }
+    .cmd::before { content: '$ '; }
+
+    .hero-name {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text);
+      margin: .4rem 0 .3rem;
+      letter-spacing: -.02em;
+    }
+
+    .hero-role { color: var(--muted); font-size: .82rem; margin-bottom: 1.5rem; }
+
+    .skills-wrap { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
+
+    .skill {
+      font-size: .68rem;
+      padding: .18rem .55rem;
+      border-radius: 4px;
+      border: 1px solid rgba(63,185,80,.3);
+      background: var(--green-dim);
+      color: var(--green);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: var(--green);
+      vertical-align: middle;
+      margin-left: 1px;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ─── SECTIONS ─── */
+    .section-wrap { max-width: 880px; margin: 0 auto; padding: 5rem 1.5rem; }
+
+    .sec-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .sec-cmd { color: var(--green); font-size: .82rem; white-space: nowrap; }
+    .sec-cmd::before { content: '$ '; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ─── CARDS ─── */
+    .cards { display: grid; gap: 1.5rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+    }
+    .card:hover {
+      border-color: rgba(63,185,80,.5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,.35);
+    }
+
+    .card-body { padding: 1.4rem 1.6rem; }
+
+    .badge {
+      display: inline-block;
+      font-size: .65rem;
+      padding: .15rem .5rem;
+      border-radius: 3px;
+      border: 1px solid rgba(88,166,255,.3);
+      background: var(--blue-dim);
+      color: var(--blue);
+      margin-bottom: .7rem;
+    }
+
+    .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .4rem; }
+
+    .card-desc { color: var(--muted); font-size: .8rem; line-height: 1.75; margin-bottom: 1rem; }
+
+    .sub-title { font-size: .72rem; color: var(--green); margin-bottom: .35rem; }
+    .sub-title::before { content: '// '; }
+
+    .card ul { list-style: none; margin-bottom: .9rem; }
+    .card ul li {
+      font-size: .77rem;
+      color: var(--muted);
+      padding: .18rem 0 .18rem 1.1rem;
+      position: relative;
+    }
+    .card ul li::before { content: '→'; position: absolute; left: 0; color: var(--green); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .8rem; }
+    .tag {
+      font-size: .65rem;
+      padding: .14rem .45rem;
+      border-radius: 3px;
+      border: 1px solid rgba(88,166,255,.2);
+      background: var(--blue-dim);
+      color: var(--blue);
+    }
+
+    /* ─── CONTACT ─── */
+    .contact-terminal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    }
+
+    .contact-body { padding: 1.4rem 1.6rem; display: grid; gap: 1.4rem; }
+
+    .contact-label { font-size: .78rem; color: var(--muted); margin-top: .4rem; }
+
+    .c-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .45rem .9rem;
+      border-radius: 6px;
+      border: 1px solid rgba(63,185,80,.3);
+      background: var(--green-dim);
+      color: var(--green);
+      text-decoration: none;
+      font-size: .8rem;
+      transition: all .2s;
+    }
+    .c-link:hover { background: rgba(63,185,80,.22); border-color: var(--green); }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: .65rem;
+      margin-top: .5rem;
+    }
+
+    .s-link {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .7rem .85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      text-decoration: none;
+      font-size: .76rem;
+      transition: all .2s;
+    }
+    .s-link:hover { border-color: rgba(63,185,80,.5); color: var(--green); }
+
+    .s-icon {
+      width: 30px; height: 30px;
+      background: var(--surface);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .s-name { font-weight: 600; line-height: 1.2; }
+    .s-handle { color: var(--muted); font-size: .67rem; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 1.75rem;
+      color: var(--muted);
+      font-size: .7rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 600px) {
+      nav { padding: .7rem 1rem; }
+      .nav-right a { display: none; }
+      .t-body { padding: 1.1rem 1.1rem; }
+      .card-body { padding: 1.1rem 1.1rem; }
+      .contact-body { padding: 1.1rem 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <span class="nav-logo">~/teoman<span>@portfolio</span></span>
+  <div class="nav-right">
+    <a href="#projects" data-i18n="nav.projects">projects</a>
+    <a href="#contact" data-i18n="nav.contact">contact</a>
+    <button class="lang-btn" id="langToggle">FR</button>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <div class="hero-terminal">
+    <div class="t-bar">
+      <div class="dot d-r"></div>
+      <div class="dot d-y"></div>
+      <div class="dot d-g"></div>
+      <span class="t-title">bash — teoman@portfolio: ~</span>
+    </div>
+    <div class="t-body">
+      <p class="cmd">whoami</p>
+      <h1 class="hero-name">Teoman Alici</h1>
+      <p class="hero-role" data-i18n="hero.role">Junior System Administrator · Metz, France</p>
+
+      <p class="cmd" style="margin-top:1.2rem">cat skills.txt</p>
+      <div class="skills-wrap" style="margin-top:.5rem">
+        <span class="skill">Linux</span>
+        <span class="skill">Networking</span>
+        <span class="skill">Cisco</span>
+        <span class="skill">Zabbix</span>
+        <span class="skill">Grafana</span>
+        <span class="skill">Proxmox</span>
+        <span class="skill">Bash</span>
+        <span class="skill">PowerShell</span>
+        <span class="skill">PHP</span>
+        <span class="skill">C</span>
+        <span class="skill">SNMP</span>
+        <span class="skill">VPN / TLS</span>
+        <span class="skill">Webmin</span>
+      </div>
+
+      <p style="margin-top:1.5rem"><span class="cmd" style="display:inline">_</span><span class="cursor"></span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PROJECTS ─── -->
+<div class="section-wrap" id="projects">
+  <div class="sec-header reveal">
+    <span class="sec-cmd" data-i18n="nav.projects">projects</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="cards">
+
+    <!-- Zabbix / Grafana -->
+    <div class="card reveal">
+      <div class="t-bar">
+        <div class="dot d-r"></div>
+        <div class="dot d-y"></div>
+        <div class="dot d-g"></div>
+        <span class="t-title">supervision-infra.sh</span>
+      </div>
+      <div class="card-body">
+        <span class="badge" data-i18n="proj.internship">Internship · BUT 2nd year</span>
+        <h3 data-i18n="proj1.title">Centralized IT Infrastructure Monitoring</h3>
+        <p class="card-desc" data-i18n="proj1.desc">
+          Designed and deployed a mutualized monitoring solution for an ESN, enabling centralized supervision of multiple clients' IT infrastructure from a single datacenter — with no direct client-to-server communication.
+        </p>
+
+        <p class="sub-title" data-i18n="proj.architecture">architecture</p>
+        <ul>
+          <li data-i18n="proj1.arch1">Central Zabbix 7.4 LTS server aggregating all client data · Grafana dashboards</li>
+          <li data-i18n="proj1.arch2">Remote proxy per client (Arduino Uno Q) — active mode, TLS · OpenVPN + Webmin + TeamViewer</li>
+          <li data-i18n="proj1.arch3">Targets: VMs/PCs via Zabbix Agent 2 · Proxmox via HTTP API · switches &amp; printers via SNMP v2</li>
+        </ul>
+
+        <p class="sub-title" data-i18n="proj.achievements">key achievements</p>
+        <ul>
+          <li data-i18n="proj1.ach1">deploy.sh — full proxy provisioning from a single config file; solved apt lock-race bug on first boot</li>
+          <li data-i18n="proj1.ach2">AgentLinux.sh — multi-distro (Debian/Ubuntu), GPG key + APT repo, automatic arch detection</li>
+          <li data-i18n="proj1.ach3">AgentWin.ps1 + LANCER.bat — auto-elevation, plugin management, PSK, reliable service restart</li>
+          <li data-i18n="proj1.ach4">Diagnosed offline proxy: ICMP vs TCP 10051, version alignment, Hostname exact-match fix</li>
+        </ul>
+
+        <div class="tags">
+          <span class="tag">Zabbix 7.4 LTS</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">Proxmox</span>
+          <span class="tag">OpenVPN</span>
+          <span class="tag">Bash</span>
+          <span class="tag">PowerShell</span>
+          <span class="tag">SNMP v2</span>
+          <span class="tag">TLS</span>
+          <span class="tag">Webmin</span>
+          <span class="tag">TeamViewer</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Smart Parking -->
+    <div class="card reveal">
+      <div class="t-bar">
+        <div class="dot d-r"></div>
+        <div class="dot d-y"></div>
+        <div class="dot d-g"></div>
+        <span class="t-title">smart-parking.php</span>
+      </div>
+      <div class="card-body">
+        <span class="badge" data-i18n="proj.academic">Academic project</span>
+        <h3 data-i18n="proj2.title">Smart Parking Guidance System</h3>
+        <p class="card-desc" data-i18n="proj2.desc">
+          Client-server application guiding drivers to the nearest available parking spot in real-time, with complete network infrastructure simulation.
+        </p>
+
+        <p class="sub-title" data-i18n="proj.achievements">key achievements</p>
+        <ul>
+          <li data-i18n="proj2.ach1">Client/server architecture design with real-time geolocation</li>
+          <li data-i18n="proj2.ach2">PHP backend with MySQL for parking data storage</li>
+          <li data-i18n="proj2.ach3">Network simulation (VLANs, routing, services) via Cisco Packet Tracer</li>
+          <li data-i18n="proj2.ach4">Automated routing between client requests and server services</li>
+        </ul>
+
+        <div class="tags">
+          <span class="tag">PHP</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">Cisco Packet Tracer</span>
+          <span class="tag">Apache</span>
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── CONTACT ─── -->
+<div class="section-wrap" id="contact">
+  <div class="sec-header reveal">
+    <span class="sec-cmd" data-i18n="nav.contact">contact</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="contact-terminal reveal">
+    <div class="t-bar">
+      <div class="dot d-r"></div>
+      <div class="dot d-y"></div>
+      <div class="dot d-g"></div>
+      <span class="t-title">bash — contact</span>
+    </div>
+    <div class="contact-body">
+
+      <div>
+        <p class="cmd">location --current</p>
+        <p class="contact-label">📍 Metz, France</p>
+      </div>
+
+      <div>
+        <p class="cmd">contact --email</p>
+        <a href="mailto:contact@teoman.eu" class="c-link" style="margin-top:.4rem">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          contact@teoman.eu
+        </a>
+      </div>
+
+      <div>
+        <p class="cmd">cat resume.pdf</p>
+        <a href="resume_fr.pdf" download id="resumeLink" class="c-link" style="margin-top:.4rem">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-i18n="contact.resume">Download Resume (FR)</span>
+        </a>
+      </div>
+
+      <div>
+        <p class="cmd">ls ./social-links</p>
+        <div class="social-grid">
+
+          <a href="https://github.com/teoman-eu" target="_blank" rel="noopener" class="s-link">
+            <div class="s-icon">
+              <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24" style="color:var(--green)"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </div>
+            <div>
+              <p class="s-name">GitHub</p>
+              <p class="s-handle">@teoman-eu</p>
+            </div>
+          </a>
+
+          <a href="https://www.linkedin.com/in/teoman-alici-7734b239a/" target="_blank" rel="noopener" class="s-link">
+            <div class="s-icon">
+              <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24" style="color:var(--green)"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </div>
+            <div>
+              <p class="s-name">LinkedIn</p>
+              <p class="s-handle">Teoman Alici</p>
+            </div>
+          </a>
+
+          <a href="https://x.com/teomaneu" target="_blank" rel="noopener" class="s-link">
+            <div class="s-icon">
+              <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24" style="color:var(--green)"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <div>
+              <p class="s-name">X</p>
+              <p class="s-handle">@teomaneu</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <span style="color:var(--green)">teoman@portfolio</span><span style="color:var(--border)">:~$</span> exit 0
+  <br><span style="margin-top:.4rem;display:inline-block">© 2026 Teoman Alici</span>
+</footer>
+
+<script>
+  /* ── i18n ── */
+  const T = {
+    en: {
+      "nav.projects":   "projects",
+      "nav.contact":    "contact",
+      "hero.role":      "Junior System Administrator · Metz, France",
+      "proj.internship":"Internship · BUT 2nd year",
+      "proj.academic":  "Academic project",
+      "proj.architecture": "architecture",
+      "proj.achievements": "key achievements",
+      "proj1.title": "Centralized IT Infrastructure Monitoring",
+      "proj1.desc":  "Designed and deployed a mutualized monitoring solution for an ESN, enabling centralized supervision of multiple clients' IT infrastructure from a single datacenter — with no direct client-to-server communication.",
+      "proj1.arch1": "Central Zabbix 7.4 LTS server aggregating all client data · Grafana dashboards",
+      "proj1.arch2": "Remote proxy per client (Arduino Uno Q) — active mode, TLS · OpenVPN + Webmin + TeamViewer",
+      "proj1.arch3": "Targets: VMs/PCs via Zabbix Agent 2 · Proxmox via HTTP API · switches & printers via SNMP v2",
+      "proj1.ach1":  "deploy.sh — full proxy provisioning from a single config file; solved apt lock-race bug on first boot",
+      "proj1.ach2":  "AgentLinux.sh — multi-distro (Debian/Ubuntu), GPG key + APT repo, automatic arch detection",
+      "proj1.ach3":  "AgentWin.ps1 + LANCER.bat — auto-elevation, plugin management, PSK, reliable service restart",
+      "proj1.ach4":  "Diagnosed offline proxy: ICMP vs TCP 10051, version alignment, Hostname exact-match fix",
+      "proj2.title": "Smart Parking Guidance System",
+      "proj2.desc":  "Client-server application guiding drivers to the nearest available parking spot in real-time, with complete network infrastructure simulation.",
+      "proj2.ach1":  "Client/server architecture design with real-time geolocation",
+      "proj2.ach2":  "PHP backend with MySQL for parking data storage",
+      "proj2.ach3":  "Network simulation (VLANs, routing, services) via Cisco Packet Tracer",
+      "proj2.ach4":  "Automated routing between client requests and server services",
+      "contact.resume": "Download Resume (EN)",
+    },
+    fr: {
+      "nav.projects":   "projets",
+      "nav.contact":    "contact",
+      "hero.role":      "Administrateur Système Junior · Metz, France",
+      "proj.internship":"Stage · BUT 2ème année",
+      "proj.academic":  "Projet académique",
+      "proj.architecture": "architecture",
+      "proj.achievements": "réalisations clés",
+      "proj1.title": "Supervision centralisée d'infrastructure IT",
+      "proj1.desc":  "Conception et déploiement d'une solution mutualisée de supervision pour une ESN, permettant de monitorer l'infrastructure IT de plusieurs clients depuis un datacenter central — sans communication directe client-serveur.",
+      "proj1.arch1": "Serveur central Zabbix 7.4 LTS agrégeant les données de tous les clients · tableaux de bord Grafana",
+      "proj1.arch2": "Proxy déporté par client (boîtier Arduino Uno Q) — mode actif, TLS · OpenVPN + Webmin + TeamViewer",
+      "proj1.arch3": "Cibles : VM/PC via Zabbix Agent 2 · Proxmox via API HTTP · switchs & imprimantes via SNMP v2",
+      "proj1.ach1":  "deploy.sh — provisioning complet du proxy depuis un fichier de config unique ; résolution du bug de verrou apt au premier boot",
+      "proj1.ach2":  "AgentLinux.sh — multi-distro (Debian/Ubuntu), clé GPG + dépôt APT, détection d'architecture automatique",
+      "proj1.ach3":  "AgentWin.ps1 + LANCER.bat — auto-élévation, gestion des plugins, PSK, redémarrage de service fiabilisé",
+      "proj1.ach4":  "Diagnostic proxy hors ligne : ICMP vs TCP 10051, alignement des versions, correspondance exacte du Hostname",
+      "proj2.title": "Système de guidage parking intelligent",
+      "proj2.desc":  "Application client-serveur guidant les conducteurs vers la place de parking disponible la plus proche en temps réel, avec simulation complète de l'infrastructure réseau.",
+      "proj2.ach1":  "Conception de l'architecture client/serveur avec géolocalisation en temps réel",
+      "proj2.ach2":  "Backend PHP avec MySQL pour le stockage des données de parking",
+      "proj2.ach3":  "Simulation réseau (VLANs, routage, services) via Cisco Packet Tracer",
+      "proj2.ach4":  "Routage automatisé entre les requêtes clients et les services serveur",
+      "contact.resume": "Télécharger le CV (FR)",
+    }
+  };
+
+  let lang = 'en';
+
+  function applyLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    const t = T[l];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.dataset.i18n;
+      if (t[k] !== undefined) el.textContent = t[k];
+    });
+    const resumeLink = document.getElementById('resumeLink');
+    if (resumeLink) resumeLink.href = l === 'fr' ? 'resume_fr.pdf' : 'resume_en.pdf';
+    document.getElementById('langToggle').textContent = l === 'en' ? 'FR' : 'EN';
+  }
+
+  document.getElementById('langToggle').addEventListener('click', () => applyLang(lang === 'en' ? 'fr' : 'en'));
+
+  /* ── Scroll reveal ── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
